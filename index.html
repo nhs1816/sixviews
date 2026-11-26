@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>여섯 시선</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;600;800&family=Noto+Serif+KR:wght@400;600;700&display=swap">
+<style>
+:root{
+  --bg:#f5f2ec; --surface:#fffdf9; --surface2:#ece7de; --line:#e0d9cc;
+  --ink:#24211d; --muted:#6e675d; --faint:#9c958a;
+  --accent:#24211d; --accent-ink:#fffdf9;
+  --c-change:#b4532a; --c-govern:#3d6a8e; --c-overcome:#a8742a;
+  --c-lessen:#6b5b95; --c-together:#3f7d5a; --c-free:#2f8486;
+  --sans:'Gothic A1',system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --serif:'Noto Serif KR','Nanum Myeongjo','AppleMyungjo',serif;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#171614; --surface:#211f1c; --surface2:#2c2925; --line:#38342f;
+    --ink:#ece6dc; --muted:#a9a196; --faint:#7a746b;
+    --accent:#ece6dc; --accent-ink:#171614;
+    --c-change:#e0855d; --c-govern:#7fa9cc; --c-overcome:#d6a85a;
+    --c-lessen:#a596cf; --c-together:#7cbb94; --c-free:#6cc0c0;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#171614; --surface:#211f1c; --surface2:#2c2925; --line:#38342f;
+  --ink:#ece6dc; --muted:#a9a196; --faint:#7a746b;
+  --accent:#ece6dc; --accent-ink:#171614;
+  --c-change:#e0855d; --c-govern:#7fa9cc; --c-overcome:#d6a85a;
+  --c-lessen:#a596cf; --c-together:#7cbb94; --c-free:#6cc0c0;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer;border:none;background:none;padding:0}
+.app{max-width:560px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom,0px))}
+.top{display:flex;align-items:baseline;justify-content:space-between;margin:6px 0 18px}
+.brand{font-family:var(--serif);font-weight:700;font-size:20px;letter-spacing:-.01em}
+.brand small{font-family:var(--sans);font-weight:400;font-size:12px;color:var(--muted);margin-left:6px}
+
+/* 오늘 */
+.daybar{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--muted);font-size:13px}
+.daybar .nav{display:flex;gap:4px}
+.daybar .nav button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);color:var(--muted);font-size:15px}
+.daybar .nav button:disabled{opacity:.35;cursor:default}
+.back-today{font-size:12px;text-decoration:underline;color:var(--muted)}
+.hero{padding:22px 0 18px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.kw{font-family:var(--serif);font-size:38px;font-weight:700;line-height:1.2;letter-spacing:-.02em}
+.group{display:inline-block;font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle;font-family:var(--sans);font-weight:400;letter-spacing:0}
+.worry{font-family:var(--serif);font-size:18px;margin:10px 0 0}
+.sec-h{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px}
+.sec-h h2{font-size:13px;font-weight:600;color:var(--muted);margin:0;letter-spacing:.02em}
+.linkbtn{font-size:12px;color:var(--muted);text-decoration:underline}
+
+.views{display:flex;flex-direction:column;gap:8px}
+.view{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:var(--r);overflow:hidden}
+.view-head{width:100%;text-align:left;padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:start}
+.view-name{font-size:12px;font-weight:600;color:var(--c)}
+.view-name span{color:var(--faint);font-weight:400;margin-left:6px}
+.view-line{grid-column:1;font-family:var(--serif);font-size:16px;line-height:1.5}
+.chev{grid-row:1/3;grid-column:2;align-self:center;color:var(--faint);transition:transform .2s ease}
+.view.open .chev{transform:rotate(90deg)}
+.view-body{padding:0 14px 14px;display:none}
+.view.open .view-body{display:block}
+.view-body p{font-family:var(--serif);font-size:15.5px;line-height:1.8;margin:0 0 10px}
+.src{font-size:12px;color:var(--faint)}
+.src b{font-weight:600;color:var(--muted)}
+
+/* 나의 시선 */
+.mine{margin-top:26px;background:var(--surface);border:1.5px dashed var(--line);border-radius:var(--r);padding:16px}
+.mine h2{font-size:13px;font-weight:600;color:var(--muted);margin:0 0 4px}
+.mine .q{font-family:var(--serif);font-size:17px;margin:0 0 14px}
+.label{font-size:12px;color:var(--muted);margin:0 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:13px;display:inline-flex;align-items:center;gap:6px;background:var(--bg)}
+.chip i{width:8px;height:8px;border-radius:50%;background:var(--c);display:inline-block}
+.chip[aria-pressed="true"]{border-color:var(--c);background:var(--c);color:#fff}
+.chip[aria-pressed="true"] i{background:#fff}
+textarea{width:100%;min-height:130px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:12px;font-family:var(--serif);font-size:16px;line-height:1.7}
+textarea:focus{outline:2px solid var(--muted);outline-offset:1px}
+.row{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.count{font-size:12px;color:var(--faint);margin-right:auto}
+.btn{border-radius:10px;padding:9px 16px;font-weight:600;font-size:14px;background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.4;cursor:default}
+.saved-msg{font-size:12px;color:var(--c-together);margin-top:8px;min-height:1.2em}
+
+.premium{margin-top:14px;width:100%;display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--r);background:var(--surface2);text-align:left}
+.premium .lock{font-size:18px}
+.premium b{display:block;font-size:14px}
+.premium small{color:var(--muted);font-size:12px}
+.premium .tag{margin-left:auto;font-size:11px;border:1px solid var(--line);border-radius:999px;padding:2px 8px;color:var(--muted);white-space:nowrap}
+.note-foot{font-size:11.5px;color:var(--faint);margin-top:18px;line-height:1.6}
+
+/* 노트 */
+.stats{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:16px}
+.stats h2,.notes-h{font-size:13px;color:var(--muted);font-weight:600;margin:0 0 10px}
+.bar{display:grid;grid-template-columns:64px 1fr 28px;align-items:center;gap:8px;font-size:13px;margin:5px 0}
+.bar .track{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.bar .fill{height:100%;background:var(--c);border-radius:99px;transition:width .3s ease}
+.bar .n{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.stats .sum{font-size:12.5px;color:var(--muted);margin:10px 0 0}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:10px}
+.note .meta{font-size:12px;color:var(--faint);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.note .meta .lens{color:var(--c);font-weight:600}
+.note .t{font-size:13px;color:var(--muted);margin:4px 0 8px}
+.note p{font-family:var(--serif);font-size:15.5px;line-height:1.75;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.note .acts{display:flex;gap:12px;margin-top:10px}
+.empty{text-align:center;color:var(--muted);padding:40px 10px;font-size:14px;white-space:pre-line}
+
+/* 시선 소개 */
+.intro{font-family:var(--serif);font-size:16px;margin:0 0 18px}
+.axis{margin-bottom:22px}
+.axis h3{font-family:var(--serif);font-size:19px;margin:0 0 2px}
+.axis .story{font-size:12.5px;color:var(--muted);margin:0 0 10px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:420px){.pair{grid-template-columns:1fr}}
+.lens-card{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--c);border-radius:var(--r);padding:12px 14px}
+.lens-card .nm{font-weight:800;color:var(--c);font-size:16px}
+.lens-card .pl{font-size:12px;color:var(--faint)}
+.lens-card .who{font-size:12.5px;color:var(--muted);margin:2px 0 8px}
+.lens-card .ask{font-family:var(--serif);font-size:15px;margin:0 0 8px}
+.lens-card dl{margin:0;font-size:12.5px;display:grid;grid-template-columns:auto 1fr;gap:2px 8px}
+.lens-card dt{color:var(--faint)}
+.lens-card dd{margin:0}
+
+/* 아래 탭 */
+.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+.tabs button{flex:1;max-width:187px;padding:12px 0 13px;font-size:13px;color:var(--faint);font-weight:600}
+.tabs button[aria-selected="true"]{color:var(--ink)}
+.tabs button[aria-selected="true"]::before{content:"";display:block;width:18px;height:2px;background:var(--ink);margin:0 auto 6px;border-radius:2px}
+.tabs button::before{content:"";display:block;width:18px;height:2px;margin:0 auto 6px}
+
+/* 창 */
+dialog{border:none;border-radius:16px;padding:0;background:var(--surface);color:var(--ink);max-width:min(92vw,420px);width:100%}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+.dlg{padding:20px}
+.dlg h3{font-family:var(--serif);margin:0 0 8px;font-size:18px}
+.dlg p{margin:0 0 14px;color:var(--muted);font-size:14px}
+.dlg img{width:100%;border-radius:10px;border:1px solid var(--line);display:block;margin-bottom:14px}
+.dlg .row{justify-content:flex-end;margin-top:0}
+</style>
+<meta name="description" content="매일 고민 하나를 고전 사상가의 여섯 시선으로 읽고, 나의 생각을 한 문단 써 보세요.">
+<meta name="theme-color" content="#f5f2ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="여섯 시선">
+<meta property="og:title" content="여섯 시선 · 하나의 고민, 여섯 개의 생각">
+<meta property="og:description" content="매일 고민 하나를 여섯 시선으로 읽고, 일곱 번째 칸에 나의 생각을 써요.">
+<meta property="og:url" content="https://nhs1816.github.io/sixviews/">
+<meta property="og:image" content="https://nhs1816.github.io/sixviews/icons/icon-512.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="여섯 시선">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<style>
+html{-webkit-text-size-adjust:100%}
+.app{padding-top:calc(16px + env(safe-area-inset-top,0px))}
+.install{background:var(--surface);border:1.5px dashed var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;margin-bottom:14px}
+.install p{margin:0;flex:1 1 220px}
+.install button{border:none;border-radius:10px;padding:8px 14px;background:var(--accent);color:var(--accent-ink);font-weight:600}
+.install button.plain{background:none;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">여섯 시선<small>하나의 고민, 여섯 개의 생각</small></div>
+  </header>
+<div class="install" id="install" hidden><p id="installText">홈 화면에 설치하면 앱처럼 바로 열 수 있어요.</p>
+<button id="installBtn">설치하기</button><button id="installClose" class="plain">닫기</button></div>
+
+
+  <main>
+    <!-- 오늘 -->
+    <section id="v-today" role="tabpanel">
+      <div class="daybar">
+        <span id="dayLabel"></span>
+        <span class="nav">
+          <button id="prevT" aria-label="이전 고민">‹</button>
+          <button id="nextT" aria-label="다음 고민">›</button>
+        </span>
+      </div>
+      <div class="hero">
+        <div class="kw"><span id="kw"></span><span class="group" id="grp"></span></div>
+        <p class="worry" id="worry"></p>
+      </div>
+
+      <div class="sec-h"><h2>여섯 시선</h2><button class="linkbtn" id="toggleAll">모두 펼치기</button></div>
+      <div class="views" id="views"></div>
+
+      <div class="mine" id="mine">
+        <h2>⑦ 나의 시선</h2>
+        <p class="q" id="prompt"></p>
+        <p class="label">가장 와닿은 시선</p>
+        <div class="chips" id="pick"></div>
+        <textarea id="text" placeholder="한 문단이면 충분해요. 여섯 시선과 달라도 좋아요." maxlength="1000"></textarea>
+        <div class="row">
+          <span class="count" id="count">0 / 1000</span>
+          <button class="btn ghost" id="cardBtn" disabled>카드로 저장</button>
+          <button class="btn" id="saveBtn" disabled>저장</button>
+        </div>
+        <div class="saved-msg" id="savedMsg" aria-live="polite"></div>
+      </div>
+
+      <button class="premium" id="premiumBtn">
+        <span class="lock" aria-hidden="true">🔒</span>
+        <span><b>내 고민 넣기</b><small>내 고민을 쓰면 여섯 시선이 답해 줘요</small></span>
+        <span class="tag">프리미엄 · 준비 중</span>
+      </button>
+
+      <p class="note-foot">여섯 시선의 글은 철학자의 직접 인용이 아니라, 그 사상을 오늘의 고민에 맞게 풀어 쓴 해석이에요. 근거는 그 생각이 나오는 저작이에요.</p>
+    </section>
+
+    <!-- 노트 -->
+    <section id="v-notes" role="tabpanel" hidden>
+      <div class="stats" id="stats"></div>
+      <h2 class="notes-h">지난 기록</h2>
+      <div id="noteList"></div>
+    </section>
+
+    <!-- 시선 소개 -->
+    <section id="v-lenses" role="tabpanel" hidden>
+      <p class="intro">고민 앞에서 던지는 질문 세 개, 그리고 서로 반대쪽을 보는 두 방향. 그래서 여섯 시선이에요.</p>
+      <div id="axes"></div>
+    </section>
+  </main>
+</div>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" data-v="today" aria-selected="true">오늘</button>
+  <button role="tab" data-v="notes" aria-selected="false">사유 노트</button>
+  <button role="tab" data-v="lenses" aria-selected="false">여섯 시선</button>
+</nav>
+
+<dialog id="dlgPremium"><div class="dlg">
+  <h3>내 고민 넣기 · 프리미엄</h3>
+  <p>지금은 매일 하나의 고민을 여섯 시선으로 읽을 수 있어요. 곧 내 고민을 직접 쓰면 여섯 시선이 각자 답해 주는 기능을 프리미엄으로 열 예정이에요.</p>
+  <div class="row"><button class="btn" data-close>알겠어요</button></div>
+</div></dialog>
+
+<dialog id="dlgCard"><div class="dlg">
+  <h3>카드 미리보기</h3>
+  <img id="cardImg" alt="나의 시선 카드">
+  <div class="row">
+    <button class="btn ghost" data-close>닫기</button>
+    <button class="btn ghost" id="shareBtn" hidden>공유</button>
+    <a class="btn" id="dlBtn" download="여섯시선.png" style="text-decoration:none">이미지 저장</a>
+  </div>
+</div></dialog>
+
+<script src="content.js?v=202611261430"></script>
+<script src="logic.js?v=202611261430"></script>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const lensById = Object.fromEntries(LENSES.map(l => [l.id, l]));
+  const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
+
+  let store = null; try { store = window.localStorage; } catch (e) {}
+  let notes = loadNotes(store);
+  const today = dateKey(new Date());
+  const baseIdx = topicIndexFor(today, TOPICS.length);
+  let offset = 0;            // 오늘 고민에서 몇 개 넘겼는지
+  let picked = null;         // 고른 시선
+  let allOpen = false;
+
+  const topic = () => TOPICS[((baseIdx + offset) % TOPICS.length + TOPICS.length) % TOPICS.length];
+  const prettyDate = key => { const [y, m, d] = key.split("-").map(Number); const w = new Date(y, m - 1, d).getDay(); return `${m}월 ${d}일 ${WEEK[w]}요일`; };
+
+  /* ---------- 오늘 ---------- */
+  function renderToday() {
+    const tp = topic();
+    $("dayLabel").textContent = offset === 0 ? `${prettyDate(today)} · 오늘의 고민` : `다른 고민 둘러보기 (${(baseIdx + offset + TOPICS.length) % TOPICS.length + 1} / ${TOPICS.length})`;
+    if (offset !== 0) {
+      const b = el("button", "back-today", "오늘로");
+      b.style.marginLeft = "8px"; b.onclick = () => { offset = 0; renderToday(); };
+      $("dayLabel").appendChild(b);
+    }
+    $("prevT").disabled = offset <= -(TOPICS.length - 1);
+    $("nextT").disabled = offset >= TOPICS.length - 1;
+    $("kw").textContent = tp.keyword;
+    $("grp").textContent = tp.group;
+    $("worry").textContent = tp.title;
+    $("prompt").textContent = tp.prompt;
+
+    const box = $("views"); box.textContent = "";
+    LENSES.forEach((l, i) => {
+      const v = tp.views[l.id];
+      const card = el("article", "view" + (allOpen ? " open" : ""));
+      card.style.setProperty("--c", `var(--c-${l.id})`);
+      const head = el("button", "view-head");
+      head.setAttribute("aria-expanded", String(allOpen));
+      const name = el("div", "view-name", `${i + 1}  ${l.name}`);
+      name.appendChild(el("span", null, v.voice));
+      head.append(name, el("div", "view-line", v.line), el("span", "chev", "›"));
+      const body = el("div", "view-body");
+      body.appendChild(el("p", null, v.body));
+      const src = el("div", "src"); src.append(el("b", null, "사상 해석"), document.createTextNode(` · 근거 ${v.source}`));
+      body.appendChild(src);
+      head.onclick = () => { const o = card.classList.toggle("open"); head.setAttribute("aria-expanded", String(o)); };
+      card.append(head, body);
+      box.appendChild(card);
+    });
+    $("toggleAll").textContent = allOpen ? "모두 접기" : "모두 펼치기";
+
+    // 나의 시선: 오늘 이 고민에 쓴 글이 있으면 불러오기
+    const saved = findNote(notes, today, tp.id);
+    picked = saved ? saved.lens : null;
+    $("text").value = saved ? saved.text : "";
+    $("savedMsg").textContent = saved ? "오늘 쓴 글이에요. 고치고 다시 저장할 수 있어요." : "";
+    renderPick(); updateCount();
+  }
+
+  function renderPick() {
+    const box = $("pick"); box.textContent = "";
+    LENSES.forEach(l => {
+      const c = el("button", "chip");
+      c.style.setProperty("--c", `var(--c-${l.id})`);
+      c.setAttribute("aria-pressed", String(picked === l.id));
+      c.append(el("i"), document.createTextNode(l.name));
+      c.onclick = () => { picked = picked === l.id ? null : l.id; renderPick(); };
+      box.appendChild(c);
+    });
+  }
+
+  function updateCount() {
+    const n = $("text").value.length;
+    $("count").textContent = `${n} / 1000`;
+    const ok = $("text").value.trim().length > 0;
+    $("saveBtn").disabled = !ok; $("cardBtn").disabled = !ok;
+  }
+
+  $("text").addEventListener("input", () => { updateCount(); $("savedMsg").textContent = ""; });
+  $("prevT").onclick = () => { offset--; renderToday(); };
+  $("nextT").onclick = () => { offset++; renderToday(); };
+  $("toggleAll").onclick = () => { allOpen = !allOpen; renderToday(); };
+
+  $("saveBtn").onclick = () => {
+    const next = saveNote(store, notes, { date: today, topicId: topic().id, lens: picked, text: $("text").value });
+    if (!next) return;
+    notes = next;
+    $("savedMsg").textContent = "저장했어요. 사유 노트에서 다시 볼 수 있어요.";
+  };
+
+  /* ---------- 카드 이미지 ---------- */
+  async function makeCard(tp, lensId, text, date) {
+    const W = 1080, H = 1350, P = 96;
+    const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+    const g = cv.getContext("2d");
+    try { await Promise.all([document.fonts.load("700 40px 'Noto Serif KR'"), document.fonts.load("400 40px 'Noto Serif KR'"), document.fonts.load("600 30px 'Gothic A1'")]); } catch (e) {}
+    const SERIF = "'Noto Serif KR', serif", SANS = "'Gothic A1', sans-serif";
+    g.fillStyle = "#f5f2ec"; g.fillRect(0, 0, W, H);
+    const lc = lensId ? getCardColor(lensId) : "#24211d";
+    g.fillStyle = lc; g.fillRect(0, 0, W, 14);
+
+    let y = P + 20;
+    g.fillStyle = "#9c958a"; g.font = `600 30px ${SANS}`; g.textBaseline = "top";
+    g.fillText(`여섯 시선 · ${prettyDate(date)}`, P, y); y += 70;
+    g.fillStyle = "#24211d"; g.font = `700 96px ${SERIF}`; g.fillText(tp.keyword, P, y); y += 132;
+    g.fillStyle = "#6e675d"; g.font = `400 36px ${SERIF}`;
+    wrapLines(tp.title, W - P * 2, s => g.measureText(s).width, 2).forEach(s => { g.fillText(s, P, y); y += 54; });
+    y += 30;
+    if (lensId) {
+      const v = tp.views[lensId], l = lensById[lensId];
+      g.fillStyle = lc; g.font = `600 30px ${SANS}`; g.fillText(`${l.name} · ${v.voice}`, P, y); y += 50;
+      g.fillStyle = "#24211d"; g.font = `400 40px ${SERIF}`;
+      wrapLines(`“${v.line}”`, W - P * 2, s => g.measureText(s).width, 2).forEach(s => { g.fillText(s, P, y); y += 60; });
+      y += 34;
+    }
+    g.strokeStyle = "#e0d9cc"; g.lineWidth = 2; g.beginPath(); g.moveTo(P, y); g.lineTo(W - P, y); g.stroke(); y += 40;
+    g.fillStyle = "#9c958a"; g.font = `600 30px ${SANS}`; g.fillText("나의 시선", P, y); y += 56;
+    g.fillStyle = "#24211d"; g.font = `400 38px ${SERIF}`;
+    const room = Math.max(2, Math.floor((H - P - 60 - y) / 62));
+    wrapLines(text.trim(), W - P * 2, s => g.measureText(s).width, room).forEach(s => { g.fillText(s, P, y); y += 62; });
+    g.fillStyle = "#9c958a"; g.font = `600 26px ${SANS}`; g.textAlign = "right";
+    g.fillText("하나의 고민, 여섯 개의 생각", W - P, H - P + 10);
+    return new Promise(res => cv.toBlob(res, "image/png"));
+  }
+  // 카드는 항상 밝은 바탕이라 라이트 색을 씀
+  const CARD_COLORS = { change: "#b4532a", govern: "#3d6a8e", overcome: "#a8742a", lessen: "#6b5b95", together: "#3f7d5a", free: "#2f8486" };
+  const getCardColor = id => CARD_COLORS[id] || "#24211d";
+
+  let cardUrl = null, cardBlob = null, making = false;
+  async function openCard(tp, lensId, text, date, btn) {
+    if (making) return;
+    making = true;
+    const label = btn && btn.textContent;
+    if (btn) { btn.textContent = "만드는 중…"; btn.disabled = true; }
+    try { cardBlob = await makeCard(tp, lensId, text, date); }
+    finally { making = false; if (btn) { btn.textContent = label; btn.disabled = false; } }
+    if (!cardBlob) return;
+    if (cardUrl) URL.revokeObjectURL(cardUrl);
+    cardUrl = URL.createObjectURL(cardBlob);
+    $("cardImg").src = cardUrl;
+    $("dlBtn").href = cardUrl;
+    $("dlBtn").download = `여섯시선_${date}_${tp.keyword}.png`;
+    let canShare = false;
+    try { canShare = !!(navigator.canShare && navigator.canShare({ files: [new File([cardBlob], "card.png", { type: "image/png" })] })); } catch (e) {}
+    $("shareBtn").hidden = !canShare;
+    $("dlgCard").showModal();
+  }
+  $("shareBtn").onclick = async () => {
+    try { await navigator.share({ files: [new File([cardBlob], $("dlBtn").download, { type: "image/png" })] }); } catch (e) {}
+  };
+  $("cardBtn").onclick = () => openCard(topic(), picked, $("text").value, today, $("cardBtn"));
+
+  /* ---------- 노트 ---------- */
+  function renderNotes() {
+    const st = lensStats(notes, LENSES.map(l => l.id));
+    const s = $("stats"); s.textContent = "";
+    s.appendChild(el("h2", null, "내가 고른 시선"));
+    const max = Math.max(1, ...LENSES.map(l => st[l.id]));
+    LENSES.forEach(l => {
+      const b = el("div", "bar"); b.style.setProperty("--c", `var(--c-${l.id})`);
+      const tr = el("div", "track"), f = el("div", "fill"); f.style.width = `${(st[l.id] / max) * 100}%`; tr.appendChild(f);
+      b.append(el("span", null, l.name), tr, el("span", "n", String(st[l.id])));
+      s.appendChild(b);
+    });
+    let sum = "아직 고른 시선이 없어요. 오늘의 고민에서 와닿은 시선을 골라 보세요.";
+    if (st.total) {
+      const top = LENSES.slice().sort((a, b) => st[b.id] - st[a.id])[0];
+      sum = `지금까지 ${notes.length}번 썼고, '${top.name}'을 가장 많이 골랐어요. ${top.ask}`;
+    } else if (notes.length) sum = `지금까지 ${notes.length}번 썼어요. 와닿은 시선도 함께 고르면 내 생각의 방향이 보여요.`;
+    s.appendChild(el("p", "sum", sum));
+
+    const list = $("noteList"); list.textContent = "";
+    if (!notes.length) { list.appendChild(el("div", "empty", "아직 기록이 없어요.\n오늘의 고민에 한 문단을 써 보세요.")); return; }
+    notes.forEach(n => {
+      const tp = TOPICS.find(t => t.id === n.topicId); if (!tp) return;
+      const c = el("article", "note");
+      const meta = el("div", "meta");
+      meta.appendChild(el("span", null, prettyDate(n.date)));
+      if (n.lens && lensById[n.lens]) { const s2 = el("span", "lens", lensById[n.lens].name); s2.style.setProperty("--c", `var(--c-${n.lens})`); meta.appendChild(s2); }
+      c.append(meta, el("div", "t", `${tp.keyword} · ${tp.title}`), el("p", null, n.text));
+      const acts = el("div", "acts");
+      const cb = el("button", "linkbtn", "카드로 저장"); cb.onclick = () => openCard(tp, n.lens, n.text, n.date, cb);
+      const db = el("button", "linkbtn", "삭제"); db.onclick = () => { if (confirm("이 기록을 지울까요? 되돌릴 수 없어요.")) { notes = deleteNote(store, notes, n.id); renderNotes(); } };
+      acts.append(cb, db); c.appendChild(acts);
+      list.appendChild(c);
+    });
+  }
+
+  /* ---------- 시선 소개 ---------- */
+  function renderLenses() {
+    const box = $("axes"); box.textContent = "";
+    AXES.forEach((a, i) => {
+      const sec = el("div", "axis");
+      sec.append(el("h3", null, `${["①", "②", "③"][i]} ${a.title}`), el("p", "story", a.story));
+      const pair = el("div", "pair");
+      a.pair.forEach(id => {
+        const l = lensById[id];
+        const c = el("div", "lens-card"); c.style.setProperty("--c", `var(--c-${id})`);
+        const nm = el("div"); nm.append(el("span", "nm", l.name), document.createTextNode(" "), el("span", "pl", l.pole));
+        const dl = el("dl");
+        dl.append(el("dt", null, "다루는 것"), el("dd", null, l.covers), el("dt", null, "다루지 않음"), el("dd", null, l.avoids));
+        c.append(nm, el("div", "who", l.voices), el("p", "ask", l.ask), dl);
+        pair.appendChild(c);
+      });
+      sec.appendChild(pair);
+      box.appendChild(sec);
+    });
+  }
+
+  /* ---------- 탭 · 창 ---------- */
+  document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => {
+    document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", String(x === b)));
+    ["today", "notes", "lenses"].forEach(v => { $("v-" + v).hidden = v !== b.dataset.v; });
+    if (b.dataset.v === "notes") renderNotes();
+    scrollTo(0, 0);
+  });
+  $("premiumBtn").onclick = () => $("dlgPremium").showModal();
+  document.querySelectorAll("dialog").forEach(d => {
+    d.addEventListener("click", e => { if (e.target === d || e.target.closest("[data-close]")) d.close(); });
+  });
+
+  renderToday(); renderLenses();
+})();
+</script>
+<script>
+/* 앱 설치 안내 + 오프라인 지원 */
+(function(){
+  const box = document.getElementById("install"), txt = document.getElementById("installText"), btn = document.getElementById("installBtn");
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  let dismissed = false; try { dismissed = localStorage.getItem("sixviews:installDismissed") === "1"; } catch(e) {}
+  const close = () => { box.hidden = true; try { localStorage.setItem("sixviews:installDismissed", "1"); } catch(e) {} };
+  document.getElementById("installClose").onclick = close;
+  if (!standalone && !dismissed) {
+    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const inApp = /KAKAOTALK|NAVER\(|Instagram|FBAN|FBAV|Line\//i.test(navigator.userAgent);
+    if (inApp) { txt.textContent = ios ? "앱처럼 쓰려면 오른쪽 아래 메뉴에서 'Safari로 열기'를 누른 뒤, 공유 버튼에서 '홈 화면에 추가'를 골라 주세요." : "앱처럼 쓰려면 메뉴에서 '다른 브라우저로 열기'를 누른 뒤 설치해 주세요."; btn.hidden = true; box.hidden = false; }
+    else if (ios) { txt.textContent = "Safari 아래쪽 공유 버튼을 누르고 '홈 화면에 추가'를 고르면 앱처럼 쓸 수 있어요."; btn.hidden = true; box.hidden = false; }
+    let deferred = null;
+    addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; btn.hidden = false; box.hidden = false; });
+    btn.onclick = async () => { if (!deferred) return; deferred.prompt(); await deferred.userChoice; deferred = null; close(); };
+    addEventListener("appinstalled", close);
+  }
+  if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+})();
+</script>
+</body>
+</html>
