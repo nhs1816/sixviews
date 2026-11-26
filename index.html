@@ -40,30 +40,52 @@
 [hidden]{display:none!important}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-tap-highlight-color:transparent}
 button{font:inherit;color:inherit;cursor:pointer;border:none;background:none;padding:0}
+input,select,textarea{font:inherit;color:var(--ink)}
 .app{max-width:560px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom,0px))}
 .top{display:flex;align-items:baseline;justify-content:space-between;margin:6px 0 18px}
 .brand{font-family:var(--serif);font-weight:700;font-size:20px;letter-spacing:-.01em}
 .brand small{font-family:var(--sans);font-weight:400;font-size:12px;color:var(--muted);margin-left:6px}
+.sec-h{display:flex;justify-content:space-between;align-items:center;margin:26px 0 10px}
+.sec-h h2,.h2{font-size:13px;font-weight:600;color:var(--muted);margin:0;letter-spacing:.02em}
+.linkbtn{font-size:12.5px;color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.btn{border-radius:10px;padding:9px 16px;font-weight:600;font-size:14px;background:var(--accent);color:var(--accent-ink);white-space:nowrap}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
+.btn.small{padding:6px 12px;font-size:13px}
+.btn:disabled{opacity:.4;cursor:default}
+.row{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.spacer{margin-right:auto}
+.muted{color:var(--muted)} .faint{color:var(--faint)}
 
 /* 오늘 */
 .daybar{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--muted);font-size:13px}
-.daybar .nav{display:flex;gap:4px}
+.daybar .nav{display:flex;gap:4px;flex-shrink:0}
 .daybar .nav button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);color:var(--muted);font-size:15px}
 .daybar .nav button:disabled{opacity:.35;cursor:default}
-.back-today{font-size:12px;text-decoration:underline;color:var(--muted)}
-.hero{padding:22px 0 18px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.hero{padding:22px 0 18px;border-bottom:1px solid var(--line)}
 .kw{font-family:var(--serif);font-size:38px;font-weight:700;line-height:1.2;letter-spacing:-.02em}
 .group{display:inline-block;font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle;font-family:var(--sans);font-weight:400;letter-spacing:0}
 .worry{font-family:var(--serif);font-size:18px;margin:10px 0 0}
-.sec-h{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px}
-.sec-h h2{font-size:13px;font-weight:600;color:var(--muted);margin:0;letter-spacing:.02em}
-.linkbtn{font-size:12px;color:var(--muted);text-decoration:underline}
+
+.revisit{margin-top:16px;background:var(--surface2);border-radius:var(--r);padding:14px 16px}
+.revisit .lbl{font-size:12px;color:var(--muted);font-weight:600}
+.revisit p{font-family:var(--serif);font-size:15px;margin:6px 0 2px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+.duel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.duel .vs{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:start}
+.duel .side b{display:block;font-size:13px;color:var(--c)}
+.duel .side span{font-family:var(--serif);font-size:15px;line-height:1.5;display:block}
+.duel .side.r{text-align:right}
+.duel .mid{font-family:var(--serif);font-weight:700;color:var(--faint);padding-top:16px}
+.duel .split{margin:12px 0 0;padding-top:10px;border-top:1px dashed var(--line);font-size:14px;color:var(--muted)}
+.duel .split b{color:var(--ink);font-weight:600}
 
 .views{display:flex;flex-direction:column;gap:8px}
 .view{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:var(--r);overflow:hidden}
 .view-head{width:100%;text-align:left;padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:start}
 .view-name{font-size:12px;font-weight:600;color:var(--c)}
 .view-name span{color:var(--faint);font-weight:400;margin-left:6px}
+.view-name em{font-style:normal;font-weight:600;font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 6px;margin-left:6px}
 .view-line{grid-column:1;font-family:var(--serif);font-size:16px;line-height:1.5}
 .chev{grid-row:1/3;grid-column:2;align-self:center;color:var(--faint);transition:transform .2s ease}
 .view.open .chev{transform:rotate(90deg)}
@@ -73,52 +95,96 @@ button{font:inherit;color:inherit;cursor:pointer;border:none;background:none;pad
 .src{font-size:12px;color:var(--faint)}
 .src b{font-weight:600;color:var(--muted)}
 
-/* 나의 시선 */
 .mine{margin-top:26px;background:var(--surface);border:1.5px dashed var(--line);border-radius:var(--r);padding:16px}
-.mine h2{font-size:13px;font-weight:600;color:var(--muted);margin:0 0 4px}
-.mine .q{font-family:var(--serif);font-size:17px;margin:0 0 14px}
+.mine .q{font-family:var(--serif);font-size:17px;margin:4px 0 14px}
 .label{font-size:12px;color:var(--muted);margin:0 0 6px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
 .chip{border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:13px;display:inline-flex;align-items:center;gap:6px;background:var(--bg)}
 .chip i{width:8px;height:8px;border-radius:50%;background:var(--c);display:inline-block}
 .chip[aria-pressed="true"]{border-color:var(--c);background:var(--c);color:#fff}
 .chip[aria-pressed="true"] i{background:#fff}
-textarea{width:100%;min-height:130px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:12px;font-family:var(--serif);font-size:16px;line-height:1.7}
-textarea:focus{outline:2px solid var(--muted);outline-offset:1px}
-.row{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
-.count{font-size:12px;color:var(--faint);margin-right:auto}
-.btn{border-radius:10px;padding:9px 16px;font-weight:600;font-size:14px;background:var(--accent);color:var(--accent-ink)}
-.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
-.btn:disabled{opacity:.4;cursor:default}
-.saved-msg{font-size:12px;color:var(--c-together);margin-top:8px;min-height:1.2em}
+.chips.against .chip[aria-pressed="true"]{background:none;color:var(--c);border:1.5px dashed var(--c)}
+.chips.against .chip[aria-pressed="true"] i{background:var(--c)}
+textarea,.input,select{width:100%;max-width:100%;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:10px 12px;font-size:16px}
+select{text-overflow:ellipsis}
+textarea{min-height:130px;resize:vertical;font-family:var(--serif);font-size:16px;line-height:1.75;padding:12px}
+textarea.long{min-height:300px}
+.input.title{font-family:var(--serif);font-size:18px;font-weight:600}
+textarea:focus,.input:focus,select:focus{outline:2px solid var(--muted);outline-offset:1px}
+.count{font-size:12px;color:var(--faint)}
+.note-foot{font-size:11.5px;color:var(--faint);margin-top:18px;line-height:1.6}
 
 .premium{margin-top:14px;width:100%;display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--r);background:var(--surface2);text-align:left}
 .premium .lock{font-size:18px}
 .premium b{display:block;font-size:14px}
 .premium small{color:var(--muted);font-size:12px}
 .premium .tag{margin-left:auto;font-size:11px;border:1px solid var(--line);border-radius:999px;padding:2px 8px;color:var(--muted);white-space:nowrap}
-.note-foot{font-size:11.5px;color:var(--faint);margin-top:18px;line-height:1.6}
 
-/* 노트 */
-.stats{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:16px}
-.stats h2,.notes-h{font-size:13px;color:var(--muted);font-weight:600;margin:0 0 10px}
+/* 쓰기 */
+.seg{display:inline-flex;background:var(--surface2);border-radius:10px;padding:3px;gap:2px}
+.seg button{padding:6px 14px;border-radius:8px;font-size:13.5px;color:var(--muted);font-weight:600}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.ed-top{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;margin-bottom:12px}
+.ed-sub{font-size:12.5px;color:var(--muted);margin:0 0 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.field{margin-bottom:12px}
+.tool{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin:4px 0 12px}
+.tool .tlens{display:flex;flex-wrap:wrap;gap:6px}
+.tool .tlens button{width:30px;height:30px;border-radius:50%;background:var(--c);color:#fff;font-size:12px;font-weight:700;opacity:.55}
+.tool .tlens button[aria-pressed="true"]{opacity:1;outline:2px solid var(--c);outline-offset:2px}
+.tool .ask{margin-top:10px;border-left:3px solid var(--c);padding:2px 0 2px 10px}
+.tool .ask b{font-size:12px;color:var(--c)}
+.tool .ask p{margin:2px 0 0;font-family:var(--serif);font-size:16px}
+.tool .ask small{display:block;color:var(--faint);font-size:12px;margin-top:4px}
+.draft-msg{font-size:12px;color:var(--faint)}
+
+/* 서랍 */
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 12px}
+.filters button{font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:4px 11px;color:var(--muted)}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.item{width:100%;text-align:left;display:block;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
+.item .meta{font-size:12px;color:var(--faint);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.item .meta .lens{color:var(--c);font-weight:600}
+.item .meta .lens.ag{font-weight:400}
+.item h3{font-family:var(--serif);font-size:16.5px;margin:4px 0 2px;font-weight:600}
+.item p{font-family:var(--serif);font-size:14.5px;margin:0;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.empty{text-align:center;color:var(--muted);padding:36px 10px;font-size:14px;white-space:pre-line}
+.tools-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+
+/* 나 */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 8px;text-align:center}
+.tile b{display:block;font-family:var(--serif);font-size:22px;line-height:1.2}
+.tile span{font-size:11.5px;color:var(--muted)}
+.cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.cal-h b{font-size:14px}
+.cal-h button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);color:var(--muted)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:12px}
+.cal .wd{color:var(--faint);font-size:11px}
+.cal .d{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;color:var(--muted)}
+.cal .d.on{background:var(--ink);color:var(--bg);font-weight:600}
+.cal .d.today{outline:1.5px solid var(--ink);outline-offset:-1.5px}
+.gauge{margin:14px 0 4px}
+.gauge .ends{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600}
+.gauge .ends span:first-child{color:var(--cl)} .gauge .ends span:last-child{color:var(--cr)}
+.gauge .ends small{font-weight:400;color:var(--faint);margin:0 4px}
+.gauge .track{position:relative;height:10px;border-radius:99px;background:linear-gradient(90deg,var(--cl),var(--surface2) 50%,var(--cr));margin:6px 0}
+.gauge .mk{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;transform:translate(-50%,-50%);background:var(--ink);border:2.5px solid var(--surface)}
+.gauge .mk.recent{background:var(--surface);border:2.5px solid var(--ink);width:14px;height:14px}
+.gauge p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.legend{font-size:11.5px;color:var(--faint);display:flex;gap:12px;margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--ink);vertical-align:-1px;margin-right:4px}
+.legend i.r{background:none;border:2px solid var(--ink)}
 .bar{display:grid;grid-template-columns:64px 1fr 28px;align-items:center;gap:8px;font-size:13px;margin:5px 0}
 .bar .track{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden}
-.bar .fill{height:100%;background:var(--c);border-radius:99px;transition:width .3s ease}
+.bar .fill{height:100%;background:var(--c);border-radius:99px}
 .bar .n{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
-.stats .sum{font-size:12.5px;color:var(--muted);margin:10px 0 0}
-.note{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:10px}
-.note .meta{font-size:12px;color:var(--faint);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.note .meta .lens{color:var(--c);font-weight:600}
-.note .t{font-size:13px;color:var(--muted);margin:4px 0 8px}
-.note p{font-family:var(--serif);font-size:15.5px;line-height:1.75;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
-.note .acts{display:flex;gap:12px;margin-top:10px}
-.empty{text-align:center;color:var(--muted);padding:40px 10px;font-size:14px;white-space:pre-line}
-
-/* 시선 소개 */
-.intro{font-family:var(--serif);font-size:16px;margin:0 0 18px}
-.axis{margin-bottom:22px}
-.axis h3{font-family:var(--serif);font-size:19px;margin:0 0 2px}
+details.guide summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);list-style:none}
+details.guide summary::-webkit-details-marker{display:none}
+details.guide summary::after{content:" ›"}
+details.guide[open] summary::after{content:" ⌄"}
+.intro{font-family:var(--serif);font-size:15.5px;margin:12px 0 16px}
+.axis{margin-bottom:20px}
+.axis h3{font-family:var(--serif);font-size:18px;margin:0 0 2px}
 .axis .story{font-size:12.5px;color:var(--muted);margin:0 0 10px}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 @media (max-width:420px){.pair{grid-template-columns:1fr}}
@@ -128,24 +194,30 @@ textarea:focus{outline:2px solid var(--muted);outline-offset:1px}
 .lens-card .who{font-size:12.5px;color:var(--muted);margin:2px 0 8px}
 .lens-card .ask{font-family:var(--serif);font-size:15px;margin:0 0 8px}
 .lens-card dl{margin:0;font-size:12.5px;display:grid;grid-template-columns:auto 1fr;gap:2px 8px}
-.lens-card dt{color:var(--faint)}
-.lens-card dd{margin:0}
+.lens-card dt{color:var(--faint)} .lens-card dd{margin:0}
 
 /* 아래 탭 */
 .tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
-.tabs button{flex:1;max-width:187px;padding:12px 0 13px;font-size:13px;color:var(--faint);font-weight:600}
+.tabs button{flex:1;max-width:140px;padding:12px 0 13px;font-size:13px;color:var(--faint);font-weight:600}
+.tabs button::before{content:"";display:block;width:18px;height:2px;margin:0 auto 6px;border-radius:2px}
 .tabs button[aria-selected="true"]{color:var(--ink)}
-.tabs button[aria-selected="true"]::before{content:"";display:block;width:18px;height:2px;background:var(--ink);margin:0 auto 6px;border-radius:2px}
-.tabs button::before{content:"";display:block;width:18px;height:2px;margin:0 auto 6px}
+.tabs button[aria-selected="true"]::before{background:var(--ink)}
 
-/* 창 */
-dialog{border:none;border-radius:16px;padding:0;background:var(--surface);color:var(--ink);max-width:min(92vw,420px);width:100%}
+/* 창 · 알림 */
+dialog{border:none;border-radius:16px;padding:0;background:var(--surface);color:var(--ink);max-width:min(92vw,460px);width:100%;max-height:88vh}
 dialog::backdrop{background:rgba(0,0,0,.45)}
 .dlg{padding:20px}
 .dlg h3{font-family:var(--serif);margin:0 0 8px;font-size:18px}
-.dlg p{margin:0 0 14px;color:var(--muted);font-size:14px}
+.dlg .sub{margin:0 0 12px;color:var(--muted);font-size:13.5px}
 .dlg img{width:100%;border-radius:10px;border:1px solid var(--line);display:block;margin-bottom:14px}
-.dlg .row{justify-content:flex-end;margin-top:0}
+.dlg .row{justify-content:flex-end;margin-top:12px}
+.dlg .body{font-family:var(--serif);font-size:15.5px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
+.fu{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.fu b{font-size:12px;color:var(--muted)}
+.fu p{font-family:var(--serif);font-size:15px;line-height:1.75;white-space:pre-wrap;margin:2px 0 0;overflow-wrap:anywhere}
+.quote{font-family:var(--serif);font-size:14.5px;color:var(--muted);background:var(--bg);border-radius:10px;padding:10px 12px;margin:0 0 12px;white-space:pre-wrap;max-height:30vh;overflow:auto}
+.toast{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);font-size:13.5px;padding:9px 16px;border-radius:999px;z-index:20;opacity:0;transition:opacity .2s ease;pointer-events:none;max-width:90vw}
+.toast.show{opacity:1}
 </style>
 <meta name="description" content="매일 고민 하나를 고전 사상가의 여섯 시선으로 읽고, 나의 생각을 한 문단 써 보세요.">
 <meta name="theme-color" content="#f5f2ec" media="(prefers-color-scheme: light)">
@@ -183,7 +255,7 @@ html{-webkit-text-size-adjust:100%}
 
   <main>
     <!-- 오늘 -->
-    <section id="v-today" role="tabpanel">
+    <section id="v-today">
       <div class="daybar">
         <span id="dayLabel"></span>
         <span class="nav">
@@ -196,56 +268,144 @@ html{-webkit-text-size-adjust:100%}
         <p class="worry" id="worry"></p>
       </div>
 
+      <div class="revisit" id="revisit" hidden></div>
+
+      <div class="sec-h"><h2>오늘의 맞대결</h2></div>
+      <div class="duel" id="duel"></div>
+
       <div class="sec-h"><h2>여섯 시선</h2><button class="linkbtn" id="toggleAll">모두 펼치기</button></div>
       <div class="views" id="views"></div>
 
-      <div class="mine" id="mine">
-        <h2>⑦ 나의 시선</h2>
+      <div class="mine">
+        <h2 class="h2">⑦ 나의 시선</h2>
         <p class="q" id="prompt"></p>
         <p class="label">가장 와닿은 시선</p>
-        <div class="chips" id="pick"></div>
-        <textarea id="text" placeholder="한 문단이면 충분해요. 여섯 시선과 달라도 좋아요." maxlength="1000"></textarea>
+        <div class="chips" id="qAgree"></div>
+        <p class="label">반박하고 싶은 시선</p>
+        <div class="chips against" id="qAgainst"></div>
+        <textarea id="qText" placeholder="한 문단이면 충분해요. 여섯 시선과 달라도 좋아요." maxlength="2000"></textarea>
         <div class="row">
-          <span class="count" id="count">0 / 1000</span>
-          <button class="btn ghost" id="cardBtn" disabled>카드로 저장</button>
-          <button class="btn" id="saveBtn" disabled>저장</button>
+          <span class="count spacer" id="qCount">0자</span>
+          <button class="btn ghost small" id="qLong">길게 쓰기 →</button>
+          <button class="btn ghost small" id="qCard" disabled>카드</button>
+          <button class="btn small" id="qSave" disabled>저장</button>
         </div>
-        <div class="saved-msg" id="savedMsg" aria-live="polite"></div>
       </div>
 
-      <button class="premium" id="premiumBtn">
+      <button class="premium" data-premium>
         <span class="lock" aria-hidden="true">🔒</span>
         <span><b>내 고민 넣기</b><small>내 고민을 쓰면 여섯 시선이 답해 줘요</small></span>
         <span class="tag">프리미엄 · 준비 중</span>
       </button>
-
       <p class="note-foot">여섯 시선의 글은 철학자의 직접 인용이 아니라, 그 사상을 오늘의 고민에 맞게 풀어 쓴 해석이에요. 근거는 그 생각이 나오는 저작이에요.</p>
     </section>
 
-    <!-- 노트 -->
-    <section id="v-notes" role="tabpanel" hidden>
-      <div class="stats" id="stats"></div>
-      <h2 class="notes-h">지난 기록</h2>
-      <div id="noteList"></div>
+    <!-- 쓰기 -->
+    <section id="v-write" hidden>
+      <div class="ed-top">
+        <div class="seg" id="edSource">
+          <button data-v="topic">고민에 대해</button>
+          <button data-v="free">자유 주제</button>
+        </div>
+        <div class="seg" id="edMode">
+          <button data-v="short">짧게</button>
+          <button data-v="long">길게</button>
+        </div>
+      </div>
+      <p class="ed-sub" id="edState"></p>
+
+      <div class="field" id="edTopicBox"><select id="edTopic" aria-label="고민 고르기"></select></div>
+      <div class="field" id="edFreeBox"><input class="input" id="edKeyword" maxlength="30" placeholder="무엇에 대해 쓸까요? 예: 용기, 엄마, 퇴근길"></div>
+      <div class="field" id="edTitleBox"><input class="input title" id="edTitle" maxlength="60" placeholder="제목"></div>
+
+      <p class="label">가장 와닿은 시선</p>
+      <div class="chips" id="edAgree"></div>
+      <p class="label">반박하고 싶은 시선</p>
+      <div class="chips against" id="edAgainst"></div>
+
+      <div class="tool" id="tool">
+        <div class="row" style="margin-top:0"><span class="h2 spacer">막힐 때, 시선에게 묻기</span></div>
+        <div class="tlens" id="toolLens" style="margin-top:8px"></div>
+        <div class="ask" id="toolAsk" hidden></div>
+        <div class="row" id="toolActs" hidden>
+          <button class="linkbtn" id="toolNext">다른 질문</button>
+          <button class="linkbtn" id="toolRival">맞수에게 묻기</button>
+          <span class="spacer"></span>
+          <button class="btn ghost small" id="toolInsert">글에 질문 넣기</button>
+        </div>
+      </div>
+
+      <textarea id="edText" placeholder="생각나는 대로 먼저 써 보세요. 다듬는 건 나중이에요." maxlength="8000"></textarea>
+      <div class="row">
+        <span class="count" id="edCount">0자</span>
+        <span class="draft-msg spacer" id="edDraft"></span>
+        <button class="btn ghost small" id="edNew">새 글</button>
+        <button class="btn ghost small" id="edCard" disabled>카드</button>
+        <button class="btn small" id="edSave" disabled>저장</button>
+      </div>
+
+      <button class="premium" data-premium id="edPremium" hidden>
+        <span class="lock" aria-hidden="true">🔒</span>
+        <span><b>이 주제를 여섯 시선에게 묻기</b><small>내가 정한 주제에 여섯 시선이 답해 줘요</small></span>
+        <span class="tag">프리미엄 · 준비 중</span>
+      </button>
     </section>
 
-    <!-- 시선 소개 -->
-    <section id="v-lenses" role="tabpanel" hidden>
-      <p class="intro">고민 앞에서 던지는 질문 세 개, 그리고 서로 반대쪽을 보는 두 방향. 그래서 여섯 시선이에요.</p>
-      <div id="axes"></div>
+    <!-- 서랍 -->
+    <section id="v-drawer" hidden>
+      <input class="input" id="dQ" type="search" placeholder="내 글에서 찾기 (키워드, 문장)">
+      <div class="filters" id="dFilter">
+        <button data-v="all">전체</button><button data-v="topic">고민</button><button data-v="free">자유 주제</button><button data-v="long">긴 글</button>
+      </div>
+      <p class="count" id="dCount"></p>
+      <div id="dList"></div>
+      <div class="tools-row">
+        <button class="linkbtn" id="dExport">글 모두 내보내기 (.txt)</button>
+        <button class="linkbtn" id="dBackup">백업 저장</button>
+        <button class="linkbtn" id="dRestore">백업 불러오기</button>
+        <input type="file" id="dFile" accept="application/json,.json" hidden>
+      </div>
+      <p class="note-foot">글은 이 기기의 브라우저에만 저장돼요. 기기를 바꾸거나 브라우저 기록을 지우기 전에 백업을 저장해 두세요.</p>
+    </section>
+
+    <!-- 나 -->
+    <section id="v-me" hidden>
+      <div class="tiles" id="tiles"></div>
+
+      <div class="sec-h"><h2>쓴 날</h2></div>
+      <div class="card">
+        <div class="cal-h"><button id="calPrev" aria-label="이전 달">‹</button><b id="calTitle"></b><button id="calNext" aria-label="다음 달">›</button></div>
+        <div class="cal" id="cal"></div>
+      </div>
+
+      <div class="sec-h"><h2>나의 사고 지도</h2></div>
+      <div class="card" id="map"></div>
+
+      <div class="sec-h"><h2>가장 와닿았던 시선</h2></div>
+      <div class="card" id="bars"></div>
+
+      <div class="sec-h"></div>
+      <details class="guide">
+        <summary>여섯 시선은 어떻게 나뉘나요</summary>
+        <p class="intro">고민 앞에서 던지는 질문 세 개, 그리고 서로 반대쪽을 보는 두 방향. 그래서 여섯 시선이에요.</p>
+        <div id="axes"></div>
+      </details>
     </section>
   </main>
 </div>
 
 <nav class="tabs" role="tablist">
   <button role="tab" data-v="today" aria-selected="true">오늘</button>
-  <button role="tab" data-v="notes" aria-selected="false">사유 노트</button>
-  <button role="tab" data-v="lenses" aria-selected="false">여섯 시선</button>
+  <button role="tab" data-v="write" aria-selected="false">쓰기</button>
+  <button role="tab" data-v="drawer" aria-selected="false">서랍</button>
+  <button role="tab" data-v="me" aria-selected="false">나</button>
 </nav>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <dialog id="dlgPremium"><div class="dlg">
-  <h3>내 고민 넣기 · 프리미엄</h3>
-  <p>지금은 매일 하나의 고민을 여섯 시선으로 읽을 수 있어요. 곧 내 고민을 직접 쓰면 여섯 시선이 각자 답해 주는 기능을 프리미엄으로 열 예정이에요.</p>
+  <h3>여섯 시선에게 묻기 · 프리미엄</h3>
+  <p class="sub">지금은 매일 하나의 고민을 여섯 시선으로 읽고 내 글을 쓸 수 있어요. 곧 내 고민이나 주제를 직접 넣으면 여섯 시선이 각자 답해 주는 기능을 프리미엄으로 열 예정이에요.</p>
   <div class="row"><button class="btn" data-close>알겠어요</button></div>
 </div></dialog>
 
@@ -259,235 +419,19 @@ html{-webkit-text-size-adjust:100%}
   </div>
 </div></dialog>
 
-<script src="content.js?v=202611261430"></script>
-<script src="logic.js?v=202611261430"></script>
-<script>
-(function () {
-  const $ = id => document.getElementById(id);
-  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  const lensById = Object.fromEntries(LENSES.map(l => [l.id, l]));
-  const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
+<dialog id="dlgNote"><div class="dlg" id="noteBox"></div></dialog>
 
-  let store = null; try { store = window.localStorage; } catch (e) {}
-  let notes = loadNotes(store);
-  const today = dateKey(new Date());
-  const baseIdx = topicIndexFor(today, TOPICS.length);
-  let offset = 0;            // 오늘 고민에서 몇 개 넘겼는지
-  let picked = null;         // 고른 시선
-  let allOpen = false;
+<dialog id="dlgFollow"><div class="dlg">
+  <h3 id="fuTitle">지금의 생각 덧붙이기</h3>
+  <p class="sub" id="fuSub"></p>
+  <div class="quote" id="fuQuote"></div>
+  <textarea id="fuText" placeholder="그때와 지금, 무엇이 달라졌나요?" maxlength="4000"></textarea>
+  <div class="row"><button class="btn ghost" data-close>닫기</button><button class="btn" id="fuSave">덧붙이기</button></div>
+</div></dialog>
 
-  const topic = () => TOPICS[((baseIdx + offset) % TOPICS.length + TOPICS.length) % TOPICS.length];
-  const prettyDate = key => { const [y, m, d] = key.split("-").map(Number); const w = new Date(y, m - 1, d).getDay(); return `${m}월 ${d}일 ${WEEK[w]}요일`; };
-
-  /* ---------- 오늘 ---------- */
-  function renderToday() {
-    const tp = topic();
-    $("dayLabel").textContent = offset === 0 ? `${prettyDate(today)} · 오늘의 고민` : `다른 고민 둘러보기 (${(baseIdx + offset + TOPICS.length) % TOPICS.length + 1} / ${TOPICS.length})`;
-    if (offset !== 0) {
-      const b = el("button", "back-today", "오늘로");
-      b.style.marginLeft = "8px"; b.onclick = () => { offset = 0; renderToday(); };
-      $("dayLabel").appendChild(b);
-    }
-    $("prevT").disabled = offset <= -(TOPICS.length - 1);
-    $("nextT").disabled = offset >= TOPICS.length - 1;
-    $("kw").textContent = tp.keyword;
-    $("grp").textContent = tp.group;
-    $("worry").textContent = tp.title;
-    $("prompt").textContent = tp.prompt;
-
-    const box = $("views"); box.textContent = "";
-    LENSES.forEach((l, i) => {
-      const v = tp.views[l.id];
-      const card = el("article", "view" + (allOpen ? " open" : ""));
-      card.style.setProperty("--c", `var(--c-${l.id})`);
-      const head = el("button", "view-head");
-      head.setAttribute("aria-expanded", String(allOpen));
-      const name = el("div", "view-name", `${i + 1}  ${l.name}`);
-      name.appendChild(el("span", null, v.voice));
-      head.append(name, el("div", "view-line", v.line), el("span", "chev", "›"));
-      const body = el("div", "view-body");
-      body.appendChild(el("p", null, v.body));
-      const src = el("div", "src"); src.append(el("b", null, "사상 해석"), document.createTextNode(` · 근거 ${v.source}`));
-      body.appendChild(src);
-      head.onclick = () => { const o = card.classList.toggle("open"); head.setAttribute("aria-expanded", String(o)); };
-      card.append(head, body);
-      box.appendChild(card);
-    });
-    $("toggleAll").textContent = allOpen ? "모두 접기" : "모두 펼치기";
-
-    // 나의 시선: 오늘 이 고민에 쓴 글이 있으면 불러오기
-    const saved = findNote(notes, today, tp.id);
-    picked = saved ? saved.lens : null;
-    $("text").value = saved ? saved.text : "";
-    $("savedMsg").textContent = saved ? "오늘 쓴 글이에요. 고치고 다시 저장할 수 있어요." : "";
-    renderPick(); updateCount();
-  }
-
-  function renderPick() {
-    const box = $("pick"); box.textContent = "";
-    LENSES.forEach(l => {
-      const c = el("button", "chip");
-      c.style.setProperty("--c", `var(--c-${l.id})`);
-      c.setAttribute("aria-pressed", String(picked === l.id));
-      c.append(el("i"), document.createTextNode(l.name));
-      c.onclick = () => { picked = picked === l.id ? null : l.id; renderPick(); };
-      box.appendChild(c);
-    });
-  }
-
-  function updateCount() {
-    const n = $("text").value.length;
-    $("count").textContent = `${n} / 1000`;
-    const ok = $("text").value.trim().length > 0;
-    $("saveBtn").disabled = !ok; $("cardBtn").disabled = !ok;
-  }
-
-  $("text").addEventListener("input", () => { updateCount(); $("savedMsg").textContent = ""; });
-  $("prevT").onclick = () => { offset--; renderToday(); };
-  $("nextT").onclick = () => { offset++; renderToday(); };
-  $("toggleAll").onclick = () => { allOpen = !allOpen; renderToday(); };
-
-  $("saveBtn").onclick = () => {
-    const next = saveNote(store, notes, { date: today, topicId: topic().id, lens: picked, text: $("text").value });
-    if (!next) return;
-    notes = next;
-    $("savedMsg").textContent = "저장했어요. 사유 노트에서 다시 볼 수 있어요.";
-  };
-
-  /* ---------- 카드 이미지 ---------- */
-  async function makeCard(tp, lensId, text, date) {
-    const W = 1080, H = 1350, P = 96;
-    const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
-    const g = cv.getContext("2d");
-    try { await Promise.all([document.fonts.load("700 40px 'Noto Serif KR'"), document.fonts.load("400 40px 'Noto Serif KR'"), document.fonts.load("600 30px 'Gothic A1'")]); } catch (e) {}
-    const SERIF = "'Noto Serif KR', serif", SANS = "'Gothic A1', sans-serif";
-    g.fillStyle = "#f5f2ec"; g.fillRect(0, 0, W, H);
-    const lc = lensId ? getCardColor(lensId) : "#24211d";
-    g.fillStyle = lc; g.fillRect(0, 0, W, 14);
-
-    let y = P + 20;
-    g.fillStyle = "#9c958a"; g.font = `600 30px ${SANS}`; g.textBaseline = "top";
-    g.fillText(`여섯 시선 · ${prettyDate(date)}`, P, y); y += 70;
-    g.fillStyle = "#24211d"; g.font = `700 96px ${SERIF}`; g.fillText(tp.keyword, P, y); y += 132;
-    g.fillStyle = "#6e675d"; g.font = `400 36px ${SERIF}`;
-    wrapLines(tp.title, W - P * 2, s => g.measureText(s).width, 2).forEach(s => { g.fillText(s, P, y); y += 54; });
-    y += 30;
-    if (lensId) {
-      const v = tp.views[lensId], l = lensById[lensId];
-      g.fillStyle = lc; g.font = `600 30px ${SANS}`; g.fillText(`${l.name} · ${v.voice}`, P, y); y += 50;
-      g.fillStyle = "#24211d"; g.font = `400 40px ${SERIF}`;
-      wrapLines(`“${v.line}”`, W - P * 2, s => g.measureText(s).width, 2).forEach(s => { g.fillText(s, P, y); y += 60; });
-      y += 34;
-    }
-    g.strokeStyle = "#e0d9cc"; g.lineWidth = 2; g.beginPath(); g.moveTo(P, y); g.lineTo(W - P, y); g.stroke(); y += 40;
-    g.fillStyle = "#9c958a"; g.font = `600 30px ${SANS}`; g.fillText("나의 시선", P, y); y += 56;
-    g.fillStyle = "#24211d"; g.font = `400 38px ${SERIF}`;
-    const room = Math.max(2, Math.floor((H - P - 60 - y) / 62));
-    wrapLines(text.trim(), W - P * 2, s => g.measureText(s).width, room).forEach(s => { g.fillText(s, P, y); y += 62; });
-    g.fillStyle = "#9c958a"; g.font = `600 26px ${SANS}`; g.textAlign = "right";
-    g.fillText("하나의 고민, 여섯 개의 생각", W - P, H - P + 10);
-    return new Promise(res => cv.toBlob(res, "image/png"));
-  }
-  // 카드는 항상 밝은 바탕이라 라이트 색을 씀
-  const CARD_COLORS = { change: "#b4532a", govern: "#3d6a8e", overcome: "#a8742a", lessen: "#6b5b95", together: "#3f7d5a", free: "#2f8486" };
-  const getCardColor = id => CARD_COLORS[id] || "#24211d";
-
-  let cardUrl = null, cardBlob = null, making = false;
-  async function openCard(tp, lensId, text, date, btn) {
-    if (making) return;
-    making = true;
-    const label = btn && btn.textContent;
-    if (btn) { btn.textContent = "만드는 중…"; btn.disabled = true; }
-    try { cardBlob = await makeCard(tp, lensId, text, date); }
-    finally { making = false; if (btn) { btn.textContent = label; btn.disabled = false; } }
-    if (!cardBlob) return;
-    if (cardUrl) URL.revokeObjectURL(cardUrl);
-    cardUrl = URL.createObjectURL(cardBlob);
-    $("cardImg").src = cardUrl;
-    $("dlBtn").href = cardUrl;
-    $("dlBtn").download = `여섯시선_${date}_${tp.keyword}.png`;
-    let canShare = false;
-    try { canShare = !!(navigator.canShare && navigator.canShare({ files: [new File([cardBlob], "card.png", { type: "image/png" })] })); } catch (e) {}
-    $("shareBtn").hidden = !canShare;
-    $("dlgCard").showModal();
-  }
-  $("shareBtn").onclick = async () => {
-    try { await navigator.share({ files: [new File([cardBlob], $("dlBtn").download, { type: "image/png" })] }); } catch (e) {}
-  };
-  $("cardBtn").onclick = () => openCard(topic(), picked, $("text").value, today, $("cardBtn"));
-
-  /* ---------- 노트 ---------- */
-  function renderNotes() {
-    const st = lensStats(notes, LENSES.map(l => l.id));
-    const s = $("stats"); s.textContent = "";
-    s.appendChild(el("h2", null, "내가 고른 시선"));
-    const max = Math.max(1, ...LENSES.map(l => st[l.id]));
-    LENSES.forEach(l => {
-      const b = el("div", "bar"); b.style.setProperty("--c", `var(--c-${l.id})`);
-      const tr = el("div", "track"), f = el("div", "fill"); f.style.width = `${(st[l.id] / max) * 100}%`; tr.appendChild(f);
-      b.append(el("span", null, l.name), tr, el("span", "n", String(st[l.id])));
-      s.appendChild(b);
-    });
-    let sum = "아직 고른 시선이 없어요. 오늘의 고민에서 와닿은 시선을 골라 보세요.";
-    if (st.total) {
-      const top = LENSES.slice().sort((a, b) => st[b.id] - st[a.id])[0];
-      sum = `지금까지 ${notes.length}번 썼고, '${top.name}'을 가장 많이 골랐어요. ${top.ask}`;
-    } else if (notes.length) sum = `지금까지 ${notes.length}번 썼어요. 와닿은 시선도 함께 고르면 내 생각의 방향이 보여요.`;
-    s.appendChild(el("p", "sum", sum));
-
-    const list = $("noteList"); list.textContent = "";
-    if (!notes.length) { list.appendChild(el("div", "empty", "아직 기록이 없어요.\n오늘의 고민에 한 문단을 써 보세요.")); return; }
-    notes.forEach(n => {
-      const tp = TOPICS.find(t => t.id === n.topicId); if (!tp) return;
-      const c = el("article", "note");
-      const meta = el("div", "meta");
-      meta.appendChild(el("span", null, prettyDate(n.date)));
-      if (n.lens && lensById[n.lens]) { const s2 = el("span", "lens", lensById[n.lens].name); s2.style.setProperty("--c", `var(--c-${n.lens})`); meta.appendChild(s2); }
-      c.append(meta, el("div", "t", `${tp.keyword} · ${tp.title}`), el("p", null, n.text));
-      const acts = el("div", "acts");
-      const cb = el("button", "linkbtn", "카드로 저장"); cb.onclick = () => openCard(tp, n.lens, n.text, n.date, cb);
-      const db = el("button", "linkbtn", "삭제"); db.onclick = () => { if (confirm("이 기록을 지울까요? 되돌릴 수 없어요.")) { notes = deleteNote(store, notes, n.id); renderNotes(); } };
-      acts.append(cb, db); c.appendChild(acts);
-      list.appendChild(c);
-    });
-  }
-
-  /* ---------- 시선 소개 ---------- */
-  function renderLenses() {
-    const box = $("axes"); box.textContent = "";
-    AXES.forEach((a, i) => {
-      const sec = el("div", "axis");
-      sec.append(el("h3", null, `${["①", "②", "③"][i]} ${a.title}`), el("p", "story", a.story));
-      const pair = el("div", "pair");
-      a.pair.forEach(id => {
-        const l = lensById[id];
-        const c = el("div", "lens-card"); c.style.setProperty("--c", `var(--c-${id})`);
-        const nm = el("div"); nm.append(el("span", "nm", l.name), document.createTextNode(" "), el("span", "pl", l.pole));
-        const dl = el("dl");
-        dl.append(el("dt", null, "다루는 것"), el("dd", null, l.covers), el("dt", null, "다루지 않음"), el("dd", null, l.avoids));
-        c.append(nm, el("div", "who", l.voices), el("p", "ask", l.ask), dl);
-        pair.appendChild(c);
-      });
-      sec.appendChild(pair);
-      box.appendChild(sec);
-    });
-  }
-
-  /* ---------- 탭 · 창 ---------- */
-  document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => {
-    document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", String(x === b)));
-    ["today", "notes", "lenses"].forEach(v => { $("v-" + v).hidden = v !== b.dataset.v; });
-    if (b.dataset.v === "notes") renderNotes();
-    scrollTo(0, 0);
-  });
-  $("premiumBtn").onclick = () => $("dlgPremium").showModal();
-  document.querySelectorAll("dialog").forEach(d => {
-    d.addEventListener("click", e => { if (e.target === d || e.target.closest("[data-close]")) d.close(); });
-  });
-
-  renderToday(); renderLenses();
-})();
-</script>
+<script src="content.js?v=202611261458"></script>
+<script src="logic.js?v=202611261458"></script>
+<script src="ui.js?v=202611261458"></script>
 <script>
 /* 앱 설치 안내 + 오프라인 지원 */
 (function(){

@@ -1,6 +1,6 @@
 // 여섯 시선 서비스 워커: 새 버전을 바로 받도록 네트워크 우선, 오프라인이면 저장해 둔 사본으로 열어요.
-const CACHE = "sixviews-202611261430";
-const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./content.js", "./logic.js",
+const CACHE = "sixviews-202611261458";
+const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./content.js", "./logic.js", "./ui.js",
   "./icons/icon-180.png", "./icons/icon-192.png", "./icons/icon-512.png"];
 
 self.addEventListener("install", e => {
