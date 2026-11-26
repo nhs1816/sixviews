@@ -68,10 +68,61 @@ function saveNote(storage, notes, note) {
     lens: note.lens || null, against: note.against || null, text,
     savedAt: prev ? prev.savedAt : now, updatedAt: now,
     followups: prev ? (prev.followups || []) : [],
+    postId: prev ? (prev.postId || null) : null, // 광장에 공유한 글이면 그 글 번호
   };
   const next = sortNotes(notes.filter(n => n.id !== id).concat(clean));
   persist(storage, next);
   return next;
+}
+
+/* 광장 공유 표시: postId 를 붙이거나(null 이면) 뗌 */
+function markShared(storage, notes, id, postId) {
+  if (!notes.some(n => n.id === id)) return null;
+  const next = notes.map(n => (n.id === id ? Object.assign({}, n, { postId: postId || null }) : n));
+  persist(storage, next);
+  return next;
+}
+
+/* ---------- 광장 ---------- */
+const AGE_BANDS = [["14-19", "14~19세"], ["20s", "20대"], ["30s", "30대"], ["40s", "40대"], ["50s", "50대"], ["60+", "60대 이상"]];
+const GENDERS = [["f", "여성"], ["m", "남성"], ["n", "밝히지 않음"]];
+const RESERVED_NAMES = ["관리자", "운영자", "admin", "raw", "운영팀"];
+
+/* 필명 검사: 2~12자, 한글·영문·숫자·_·. 만. 문제가 있으면 이유, 없으면 null */
+function penNameError(name) {
+  const s = String(name || "").trim();
+  if (s.length < 2) return "필명은 2자 이상이어야 해요.";
+  if (s.length > 12) return "필명은 12자까지 쓸 수 있어요.";
+  if (!/^[가-힣a-zA-Z0-9_.]+$/.test(s)) return "한글, 영문, 숫자, _ . 만 쓸 수 있어요. (띄어쓰기 안 돼요)";
+  if (RESERVED_NAMES.includes(s.toLowerCase())) return "쓸 수 없는 필명이에요.";
+  return null;
+}
+/* 필명 중복 검사용 키 (영문은 대소문자 구분 안 함) */
+function penNameKey(name) { return String(name || "").trim().toLowerCase(); }
+
+/* "방금", "5분 전", "3시간 전", "2일 전", 일주일 넘으면 "11. 3." */
+function timeAgo(ms, nowMs) {
+  const s = Math.max(0, Math.floor((nowMs - ms) / 1000));
+  if (s < 60) return "방금";
+  if (s < 3600) return `${Math.floor(s / 60)}분 전`;
+  if (s < 86400) return `${Math.floor(s / 3600)}시간 전`;
+  if (s < 7 * 86400) return `${Math.floor(s / 86400)}일 전`;
+  const d = new Date(ms), n = new Date(nowMs);
+  return `${d.getFullYear() === n.getFullYear() ? "" : d.getFullYear() + ". "}${d.getMonth() + 1}. ${d.getDate()}.`;
+}
+
+/* 위험 신호 문구가 있으면 true → 공유 전에 상담 전화 안내 */
+const RISK_WORDS = ["죽고 싶", "죽고싶", "자살", "자해", "사라지고 싶", "사라지고싶", "살기 싫", "살기싫", "끝내고 싶", "끝내고싶"];
+function riskText(text) {
+  const t = String(text || "").replace(/\s+/g, " ");
+  return RISK_WORDS.some(w => t.includes(w));
+}
+
+/* 광장에 보일 글인지: 숨김·신고 3건 이상은 가림 (내 글과 관리자는 보임) */
+const REPORT_HIDE = 3;
+function visiblePost(p, myUid, admin) {
+  if (admin || (myUid && p.uid === myUid)) return true;
+  return !p.hidden && (p.reportCount || 0) < REPORT_HIDE;
 }
 
 /* 덧쓰기: 지난 글 아래에 지금의 생각을 이어 붙임 */
@@ -231,7 +282,8 @@ function wrapLines(text, maxWidth, measure, maxLines) {
 
 const SixLogic = {
   START_DATE, NOTES_KEY, REVISIT_DAYS, dateKey, daysBetween, addDays, topicIndexFor,
-  loadNotes, saveNote, addFollowup, deleteNote, findNote, revisitCandidate,
+  loadNotes, saveNote, markShared, addFollowup, deleteNote, findNote, revisitCandidate,
+  AGE_BANDS, GENDERS, penNameError, penNameKey, timeAgo, riskText, visiblePost, REPORT_HIDE,
   lensStats, axisLean, writtenDays, streak, monthCells, charCount,
   searchNotes, noteKeyword, exportText, parseBackup, mergeNotes, wrapLines,
 };

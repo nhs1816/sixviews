@@ -149,6 +149,7 @@
     $("qCount").textContent = `${L.charCount($("qText").value)}자`;
     const ok = $("qText").value.trim().length > 0;
     $("qSave").disabled = !ok; $("qCard").disabled = !ok;
+    refreshShareButtons();
   }
 
   $("qText").addEventListener("input", updateQuick);
@@ -160,7 +161,7 @@
     const next = L.saveNote(store, notes, { date: today, topicId: tp.id, lens: S.quick.lens, against: S.quick.against,
       text: $("qText").value, mode: prev ? prev.mode : "short", title: prev ? prev.title : "" });
     if (!next) return;
-    notes = next; updateFlow(); toast("저장했어요. 서랍에서 다시 볼 수 있어요.");
+    notes = next; updateFlow(); refreshShareButtons(); toast("저장했어요.");
   };
   $("qCard").onclick = () => {
     const tp = topic();
@@ -228,6 +229,7 @@
     $("edCount").textContent = `${L.charCount($("edText").value)}자`;
     const ok = $("edText").value.trim() && (S.ed.source === "topic" || $("edKeyword").value.trim());
     $("edSave").disabled = !ok; $("edCard").disabled = !ok;
+    refreshShareButtons();
   }
 
   document.querySelectorAll("#edSource button").forEach(b => b.onclick = () => {
@@ -252,7 +254,7 @@
     const mine = notes.find(n => n.updatedAt === now);
     if (mine) ed.editingId = mine.id;
     delKey(DRAFT_KEY); $("edDraft").textContent = "";
-    toast("저장했어요. 서랍에 담겼어요."); renderEditor();
+    toast("저장했어요."); renderEditor();
   };
   $("edNew").onclick = () => {
     if (S.ed.text.trim() && !S.ed.editingId && !confirm("쓰던 글을 비우고 새로 시작할까요? 저장하지 않은 내용은 사라져요.")) return;
@@ -373,7 +375,9 @@
     const card = el("button", "btn ghost small", "카드");
     card.onclick = () => openCard({ keyword: L.noteKeyword(n, topicsById), worry: tp ? tp.title : "", lensId: n.lens, lensLine: tp && n.lens ? tp.views[n.lens].line : "", title: n.title, text: n.text, date: n.date }, card);
     const fu = el("button", "btn small", "덧쓰기"); fu.onclick = () => { $("dlgNote").close(); openFollow(n.id); };
-    row.append(del, el("span", "spacer"), edit, card, fu);
+    const sh = el("button", "btn ghost small", n.postId ? "광장 글" : "광장에 공유");
+    sh.onclick = () => { $("dlgNote").close(); share(n.id); };
+    row.append(del, el("span", "spacer"), edit, card, sh, fu);
     box.appendChild(row);
     if (!$("dlgNote").open) $("dlgNote").showModal();
   }
@@ -550,13 +554,36 @@
   /* ================= 탭 · 창 ================= */
   function showTab(v) {
     document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", String(x.dataset.v === v)));
-    ["today", "write", "drawer", "me"].forEach(k => { $("v-" + k).hidden = k !== v; });
+    ["today", "square", "write", "drawer", "me"].forEach(k => { $("v-" + k).hidden = k !== v; });
     if (v === "today") renderToday();
     if (v === "write") renderEditor();
     if (v === "drawer") renderDrawer();
     if (v === "me") renderMe();
+    if (window.RawSocial) window.RawSocial.onTab(v);
     scrollTo(0, 0);
   }
+
+  /* 광장(social.js)과 잇기 */
+  function share(id) {
+    const n = notes.find(x => x.id === id);
+    if (!n) return toast("먼저 저장해 주세요.");
+    if (!window.RawSocial) return toast("광장을 불러오는 중이에요. 잠시 뒤 다시 눌러 주세요.");
+    window.RawSocial.shareNote(n);
+  }
+  function refreshShareButtons() {
+    const tp = topic(), q = L.findNote(notes, today, tp.id);
+    $("qShare").hidden = !q; if (q) $("qShare").textContent = q.postId ? "광장 글" : "광장에 공유";
+    const e = S.ed && S.ed.editingId && notes.find(n => n.id === S.ed.editingId);
+    $("edShare").hidden = !e; if (e) $("edShare").textContent = e.postId ? "광장 글" : "광장에 공유";
+  }
+  $("qShare").onclick = () => { const n = L.findNote(notes, today, topic().id); if (n) share(n.id); };
+  $("edShare").onclick = () => { if (S.ed && S.ed.editingId) share(S.ed.editingId); };
+  window.RawApp = {
+    toast,
+    markShared(id, postId) { const next = L.markShared(store, notes, id, postId); if (next) notes = next; refreshShareButtons(); if (!$("v-drawer").hidden) renderDrawer(); },
+    unmarkPost(postId) { const n = notes.find(x => x.postId === postId); if (n) this.markShared(n.id, null); },
+    clearShared() { notes.filter(n => n.postId).forEach(n => { notes = L.markShared(store, notes, n.id, null) || notes; }); },
+  };
   document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => showTab(b.dataset.v));
   document.querySelectorAll("[data-premium]").forEach(b => b.onclick = () => $("dlgPremium").showModal());
   document.querySelectorAll("dialog").forEach(d => d.addEventListener("click", e => {

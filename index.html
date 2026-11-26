@@ -217,6 +217,58 @@ details.guide[open] summary::after{content:" ⌄"}
 .tabs button[aria-selected="true"]{color:var(--ink)}
 .tabs button[aria-selected="true"]::before{background:var(--ink)}
 
+/* 광장 */
+#sqMode{margin-bottom:14px}
+.join{margin-bottom:14px}
+.join p{margin:0 0 10px;font-size:14px;color:var(--muted)}
+.posts{display:flex;flex-direction:column;gap:12px}
+.post{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px 8px}
+.post-h{display:flex;align-items:center;gap:6px;font-size:13px;flex-wrap:wrap}
+.post-h .pen,.prof-h .pen{font-weight:800;font-size:14px}
+.kwchip{font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:0 8px;color:var(--muted);margin-left:2px}
+.kwchip.warn{color:#c0392b;border-color:#e6b0aa}
+.post-h .more{margin-left:auto;color:var(--faint);font-size:18px;line-height:1;padding:2px 4px}
+.post-worry{font-size:12.5px;color:var(--faint);margin:6px 0 0}
+.post h3{font-family:var(--serif);font-size:17px;margin:8px 0 0}
+.post-text{font-family:var(--serif);font-size:15.5px;line-height:1.8;margin:8px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.post-text.clamp{display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.moretext{margin-top:2px}
+.post-lens{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.lchip{font-size:12px;color:var(--c);border:1px solid var(--c);border-radius:999px;padding:1px 9px}
+.lchip.ag{border-style:dashed}
+.post-acts{display:flex;align-items:center;gap:14px;margin-top:6px;border-top:1px solid var(--line);padding-top:4px}
+.act{display:inline-flex;align-items:center;gap:5px;color:var(--muted);font-size:13.5px;padding:6px 2px;min-height:40px}
+.act.on{color:#d64545;--fill:#d64545}
+.act.save.on{color:var(--ink);--fill:var(--ink)}
+.sentinel{text-align:center;color:var(--faint);font-size:12.5px;padding:18px 0 4px;min-height:40px}
+.profile{margin-bottom:12px}
+.prof-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.prof-h .faint{font-size:12.5px}
+.profile .row{margin-top:8px}
+.small{font-size:11px}
+.radios{display:flex;gap:14px;flex-wrap:wrap;font-size:14px}
+.radio{display:inline-flex;align-items:center;gap:6px}
+.check{display:flex;align-items:center;gap:8px;font-size:14px;margin-top:10px}
+.check input,.radio input{width:18px;height:18px;accent-color:var(--ink)}
+.privacy{margin-top:10px;font-size:12.5px;color:var(--muted)}
+.privacy summary{cursor:pointer}
+.privacy p{margin:6px 0 0;line-height:1.7}
+.err{color:#c0392b;font-size:13px;min-height:1.2em;margin:8px 0 0}
+.preview b{display:block;font-family:var(--sans);font-size:12px;color:var(--muted);margin-bottom:6px}
+.preview .pv-title{font-weight:700;color:var(--ink);margin-bottom:4px}
+.preview p{margin:0}
+.risk{background:var(--surface2);border-radius:10px;padding:10px 12px;margin:0 0 4px;font-size:13.5px}
+.risk p{margin:4px 0 0;color:var(--muted)}
+.risk a{color:var(--ink);font-weight:700}
+.cm-list{max-height:46vh;overflow:auto;margin:0 0 10px;display:flex;flex-direction:column;gap:10px}
+.cm{border-bottom:1px solid var(--line);padding-bottom:8px}
+.cm-h{display:flex;align-items:center;gap:6px;font-size:13px}
+.cm p{margin:2px 0 0;font-size:14.5px;white-space:pre-wrap;overflow-wrap:anywhere}
+textarea.cm-input{min-height:70px;font-family:var(--sans);font-size:16px}
+.menu{display:flex;flex-direction:column;gap:2px}
+.menu-item{text-align:left;padding:12px 4px;border-bottom:1px solid var(--line);font-size:15px}
+.menu-item.danger{color:#c0392b}
+
 /* 창 · 알림 */
 dialog{border:none;border-radius:16px;padding:0;background:var(--surface);color:var(--ink);max-width:min(92vw,460px);width:100%;max-height:88vh}
 dialog::backdrop{background:rgba(0,0,0,.45)}
@@ -312,6 +364,7 @@ html{-webkit-text-size-adjust:100%}
           <span class="count spacer" id="qCount">0자</span>
           <button class="btn ghost small" id="qLong">길게 쓰기 →</button>
           <button class="btn ghost small" id="qCard" disabled>카드</button>
+          <button class="btn ghost small" id="qShare" hidden>광장에 공유</button>
           <button class="btn small" id="qSave" disabled>저장</button>
         </div>
       </div>
@@ -322,6 +375,14 @@ html{-webkit-text-size-adjust:100%}
         <span class="tag">프리미엄 · 준비 중</span>
       </button>
       <p class="note-foot">여섯 시선의 글은 철학자의 직접 인용이 아니라, 그 사상을 오늘의 고민에 맞게 풀어 쓴 해석이에요. 근거는 그 생각이 나오는 저작이에요.</p>
+    </section>
+
+    <!-- 광장 -->
+    <section id="v-square" hidden>
+      <div class="seg" id="sqMode" hidden>
+        <button data-v="all">전체</button><button data-v="mine">내 글</button><button data-v="saved">저장</button>
+      </div>
+      <div id="sqBody"></div>
     </section>
 
     <!-- 쓰기 -->
@@ -365,6 +426,7 @@ html{-webkit-text-size-adjust:100%}
         <span class="draft-msg spacer" id="edDraft"></span>
         <button class="btn ghost small" id="edNew">새 글</button>
         <button class="btn ghost small" id="edCard" disabled>카드</button>
+        <button class="btn ghost small" id="edShare" hidden>광장에 공유</button>
         <button class="btn small" id="edSave" disabled>저장</button>
       </div>
 
@@ -394,6 +456,7 @@ html{-webkit-text-size-adjust:100%}
 
     <!-- 나 -->
     <section id="v-me" hidden>
+      <div class="card profile" id="profileBox" hidden></div>
       <div class="tiles" id="tiles"></div>
 
       <div class="sec-h"><h2>쓴 날</h2></div>
@@ -420,6 +483,7 @@ html{-webkit-text-size-adjust:100%}
 
 <nav class="tabs" role="tablist">
   <button role="tab" data-v="today" aria-selected="true">오늘</button>
+  <button role="tab" data-v="square" aria-selected="false">광장</button>
   <button role="tab" data-v="write" aria-selected="false">쓰기</button>
   <button role="tab" data-v="drawer" aria-selected="false">서랍</button>
   <button role="tab" data-v="me" aria-selected="false">나</button>
@@ -453,9 +517,71 @@ html{-webkit-text-size-adjust:100%}
   <div class="row"><button class="btn ghost" data-close>닫기</button><button class="btn" id="fuSave">덧붙이기</button></div>
 </div></dialog>
 
-<script src="content.js?v=202611261513"></script>
-<script src="logic.js?v=202611261513"></script>
-<script src="ui.js?v=202611261513"></script>
+<dialog id="dlgLogin"><div class="dlg">
+  <h3>필명을 정해 주세요</h3>
+  <p class="sub">광장에서는 필명만 보여요. 비밀번호 없이 이 기기로 이어서 쓸 수 있어요.</p>
+  <label class="label" for="lgName">필명</label>
+  <input class="input" id="lgName" maxlength="12" placeholder="2~12자, 한글·영문·숫자" autocomplete="off">
+  <label class="label" for="lgAge" style="margin-top:12px">연령대</label>
+  <select id="lgAge"></select>
+  <p class="label" style="margin-top:12px">성별</p>
+  <div class="radios" id="lgGender"></div>
+  <label class="check"><input type="checkbox" id="lgOld"> 만 14세 이상이에요.</label>
+  <label class="check"><input type="checkbox" id="lgAgree"> 개인정보 수집·이용에 동의해요.</label>
+  <details class="privacy"><summary>무엇을 왜 모으나요</summary>
+    <p>모으는 것: 필명, 연령대, 성별, 광장에 올린 글·댓글·좋아요.<br>쓰는 곳: 광장 운영과 이름을 지운 통계. 광장에는 필명만 보이고 연령대·성별은 공개하지 않아요.<br>보관: 서울에 있는 서버(Supabase)에 두고, 탈퇴하면 바로 지워요. 동의하지 않으면 광장만 쓸 수 없고, 혼자 쓰는 기능은 그대로 쓸 수 있어요.<br>만 14세 미만은 가입할 수 없어요.</p>
+  </details>
+  <p class="err" id="lgErr" aria-live="polite"></p>
+  <div class="row"><button class="btn ghost" id="lgLater">둘러보기만 할게요</button><button class="btn" id="lgSubmit">시작하기</button></div>
+</div></dialog>
+
+<dialog id="dlgProfile"><div class="dlg">
+  <h3>연령대·성별 고치기</h3>
+  <label class="label" for="peAge">연령대</label><select id="peAge"></select>
+  <label class="label" for="peGender" style="margin-top:12px">성별</label>
+  <select id="peGender"><option value="f">여성</option><option value="m">남성</option><option value="n">밝히지 않음</option></select>
+  <div class="row"><button class="btn ghost" data-close>닫기</button><button class="btn" id="peSave">저장</button></div>
+</div></dialog>
+
+<dialog id="dlgShare"><div class="dlg">
+  <h3 id="shTitle">광장에 공유할까요?</h3>
+  <p class="sub" id="shSub"></p>
+  <div class="quote preview" id="shPreview"></div>
+  <div class="risk" id="shRisk" hidden>
+    <b>혹시 많이 힘드신가요?</b>
+    <p>혼자 견디기 어려울 땐 자살예방상담전화 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:15770199">1577-0199</a>에서 24시간 이야기를 들어 줘요. 광장보다 먼저, 사람에게 기대어도 괜찮아요.</p>
+  </div>
+  <div class="row">
+    <button class="btn ghost" data-close>닫기</button>
+    <button class="btn ghost" id="shUndo" hidden>광장에서 내리기</button>
+    <button class="btn" id="shUpdate" hidden>고친 내용 반영</button>
+    <button class="btn" id="shGo">광장에 올리기</button>
+  </div>
+</div></dialog>
+
+<dialog id="dlgComments"><div class="dlg">
+  <h3 id="cmTitle">댓글</h3>
+  <div class="cm-list" id="cmList"></div>
+  <div id="cmForm">
+    <textarea id="cmText" class="cm-input" maxlength="500" placeholder="따뜻한 한마디를 남겨 주세요."></textarea>
+    <div class="row"><button class="btn ghost" data-close>닫기</button><button class="btn" id="cmSend">남기기</button></div>
+  </div>
+  <div class="row"><button class="btn" id="cmJoin" hidden>필명 정하고 댓글 쓰기</button></div>
+</div></dialog>
+
+<dialog id="dlgMenu"><div class="dlg">
+  <div id="mnReason" class="field"><label class="label" for="mnReasonSel">신고 이유</label>
+    <select id="mnReasonSel"><option value="abuse">욕설·비방</option><option value="spam">광고·도배</option><option value="risk">위험해 보여요 (자해·자살)</option><option value="privacy">개인정보 노출</option><option value="etc">기타</option></select>
+  </div>
+  <div class="menu" id="mnBox"></div>
+  <div class="row"><button class="btn ghost" data-close>닫기</button></div>
+</div></dialog>
+
+<script src="content.js?v=202611261737"></script>
+<script src="logic.js?v=202611261737"></script>
+<script src="ui.js?v=202611261737"></script>
+<script src="supabase-config.js?v=202611261737"></script>
+<script type="module" src="social.js?v=202611261737"></script>
 <script>
 /* 앱 설치 안내 + 오프라인 지원 */
 (function(){
