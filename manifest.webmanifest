@@ -1,7 +1,7 @@
 {
-  "name": "여섯 시선",
-  "short_name": "여섯 시선",
-  "description": "하나의 고민, 여섯 개의 생각",
+  "name": "RAW · 읽고, 묻고, 쓰다",
+  "short_name": "RAW",
+  "description": "읽고, 묻고, 쓰다 — 고전의 여섯 시선과 부딪쳐 나의 글을 쓰는 곳",
   "lang": "ko",
   "start_url": "./",
   "scope": "./",

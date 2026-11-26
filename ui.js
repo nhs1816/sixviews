@@ -1,4 +1,4 @@
-/* 여섯 시선 화면 — 오늘 · 쓰기 · 서랍 · 나 */
+/* RAW(읽고, 묻고, 쓰다) 화면 — 오늘 · 쓰기 · 서랍 · 나 */
 (function () {
   const L = SixLogic;
   const $ = id => document.getElementById(id);
@@ -21,7 +21,7 @@
   const N = TOPICS.length;
 
   const S = {
-    offset: 0, allOpen: false,
+    offset: 0, allOpen: false, read: false,
     quick: { lens: null, against: null },
     ed: null, toolLens: null, toolIdx: 0,
     drawer: { q: "", filter: "all" },
@@ -84,7 +84,7 @@
       body.appendChild(el("p", null, v.body));
       const src = el("div", "src"); src.append(el("b", null, "사상 해석"), document.createTextNode(` · 근거 ${v.source}`));
       body.appendChild(src);
-      head.onclick = () => { const o = card.classList.toggle("open"); head.setAttribute("aria-expanded", String(o)); };
+      head.onclick = () => { const o = card.classList.toggle("open"); head.setAttribute("aria-expanded", String(o)); if (o) { S.read = true; updateFlow(); } };
       card.append(head, body); box.appendChild(card);
     });
     $("toggleAll").textContent = S.allOpen ? "모두 접기" : "모두 펼치기";
@@ -126,7 +126,25 @@
   function renderQuickChips() {
     renderChips($("qAgree"), S.quick.lens, id => { S.quick.lens = id; if (id && S.quick.against === id) S.quick.against = null; renderQuickChips(); });
     renderChips($("qAgainst"), S.quick.against, id => { S.quick.against = id; if (id && S.quick.lens === id) S.quick.lens = null; renderQuickChips(); });
+    updateFlow();
   }
+
+  /* 오늘의 흐름 R → A → W: 시선을 펼쳐 읽으면 R, 시선을 고르면 A, 저장하면 W */
+  function updateFlow() {
+    const tp = topic(), saved = L.findNote(notes, today, tp.id);
+    const done = {
+      "s-read": S.read || S.allOpen || !!saved,
+      "s-ask": !!(S.quick.lens || S.quick.against),
+      "s-write": !!saved,
+    };
+    document.querySelectorAll("#flow .step").forEach(b => {
+      b.classList.toggle("done", done[b.dataset.go]);
+      b.setAttribute("aria-label", `${b.textContent.trim()} ${done[b.dataset.go] ? "완료" : "아직"}`);
+    });
+  }
+  document.querySelectorAll("#flow .step").forEach(b => b.onclick = () => {
+    const t = $(b.dataset.go); if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
   function updateQuick() {
     $("qCount").textContent = `${L.charCount($("qText").value)}자`;
     const ok = $("qText").value.trim().length > 0;
@@ -134,15 +152,15 @@
   }
 
   $("qText").addEventListener("input", updateQuick);
-  $("prevT").onclick = () => { S.offset--; renderToday(); };
-  $("nextT").onclick = () => { S.offset++; renderToday(); };
+  $("prevT").onclick = () => { S.offset--; S.read = false; renderToday(); };
+  $("nextT").onclick = () => { S.offset++; S.read = false; renderToday(); };
   $("toggleAll").onclick = () => { S.allOpen = !S.allOpen; renderToday(); };
   $("qSave").onclick = () => {
     const tp = topic(), prev = L.findNote(notes, today, tp.id);
     const next = L.saveNote(store, notes, { date: today, topicId: tp.id, lens: S.quick.lens, against: S.quick.against,
       text: $("qText").value, mode: prev ? prev.mode : "short", title: prev ? prev.title : "" });
     if (!next) return;
-    notes = next; toast("저장했어요. 서랍에서 다시 볼 수 있어요.");
+    notes = next; updateFlow(); toast("저장했어요. 서랍에서 다시 볼 수 있어요.");
   };
   $("qCard").onclick = () => {
     const tp = topic();
@@ -311,18 +329,18 @@
   }
   $("dExport").onclick = () => {
     if (!notes.length) return toast("내보낼 글이 없어요.");
-    download(`여섯시선_내글_${today}.txt`, L.exportText(notes, topicsById, lensById), "text/plain;charset=utf-8");
+    download(`RAW_내글_${today}.txt`, L.exportText(notes, topicsById, lensById), "text/plain;charset=utf-8");
   };
   $("dBackup").onclick = () => {
     if (!notes.length) return toast("백업할 글이 없어요.");
-    download(`여섯시선_백업_${today}.json`, JSON.stringify({ app: "sixviews", version: 2, exportedAt: new Date().toISOString(), notes }, null, 1), "application/json");
+    download(`RAW_백업_${today}.json`, JSON.stringify({ app: "sixviews", version: 2, exportedAt: new Date().toISOString(), notes }, null, 1), "application/json");
   };
   $("dRestore").onclick = () => $("dFile").click();
   $("dFile").onchange = async () => {
     const f = $("dFile").files[0]; $("dFile").value = "";
     if (!f) return;
     const list = L.parseBackup(await f.text());
-    if (!list) return toast("여섯 시선 백업 파일이 아니에요.");
+    if (!list) return toast("RAW 백업 파일이 아니에요.");
     notes = L.mergeNotes(notes, list);
     try { store && store.setItem(L.NOTES_KEY, JSON.stringify(notes)); } catch (e) {}
     toast(`백업에서 ${list.length}편을 불러왔어요.`); renderDrawer();
@@ -480,7 +498,7 @@
     g.fillStyle = lc; g.fillRect(0, 0, W, 14);
     g.textBaseline = "top";
     let y = P + 20;
-    g.fillStyle = "#9c958a"; g.font = `600 30px ${SANS}`; g.fillText(`여섯 시선 · ${prettyDate(c.date)}`, P, y); y += 70;
+    g.fillStyle = "#9c958a"; g.font = `600 30px ${SANS}`; g.fillText(`RAW · ${prettyDate(c.date)}`, P, y); y += 70;
     g.fillStyle = "#24211d"; g.font = `700 92px ${SERIF}`; g.fillText(c.keyword || "나의 시선", P, y); y += 126;
     if (c.worry) { g.fillStyle = "#6e675d"; g.font = `400 36px ${SERIF}`; L.wrapLines(c.worry, W - P * 2, measure, 2).forEach(s => { g.fillText(s, P, y); y += 54; }); y += 26; }
     if (c.lensId && c.lensLine) {
@@ -503,7 +521,7 @@
     const maxLines = Math.max(2, Math.floor(room / (size * 1.6)));
     L.wrapLines(String(c.text).trim(), W - P * 2, measure, maxLines).forEach(s => { g.fillText(s, P, y); y += size * 1.6; });
     g.fillStyle = "#9c958a"; g.font = `600 26px ${SANS}`; g.textAlign = "right";
-    g.fillText("하나의 고민, 여섯 개의 생각", W - P, H - P + 10);
+    g.fillText("읽고, 묻고, 쓰다", W - P, H - P + 10);
     return new Promise(res => cv.toBlob(res, "image/png"));
   }
 
@@ -519,7 +537,7 @@
     if (cardUrl) URL.revokeObjectURL(cardUrl);
     cardUrl = URL.createObjectURL(cardBlob);
     $("cardImg").src = cardUrl; $("dlBtn").href = cardUrl;
-    $("dlBtn").download = `여섯시선_${c.date}_${(c.keyword || "글").replace(/[\\/:*?"<>|]/g, "")}.png`;
+    $("dlBtn").download = `RAW_${c.date}_${(c.keyword || "글").replace(/[\\/:*?"<>|]/g, "")}.png`;
     let canShare = false;
     try { canShare = !!(navigator.canShare && navigator.canShare({ files: [new File([cardBlob], "card.png", { type: "image/png" })] })); } catch (e) {}
     $("shareBtn").hidden = !canShare;
